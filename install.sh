@@ -2,4 +2,4 @@
 
 cd "$(dirname $0)"
 
-cp -r dotfiles/ ~
+cp -R dotfiles/. ~

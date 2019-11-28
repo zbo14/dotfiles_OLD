@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-function dec() {
+function decrypt() {
   if [[ -z "$1" ]]
   then
     echo "Usage: dec /path/to/thing"
@@ -31,7 +31,7 @@ function dec() {
   fi
 }
 
-function enc() {
+function encrypt() {
   if [[ -z "$1" ]]
   then
     echo "Usage: enc /path/to/thing"
@@ -61,7 +61,7 @@ function enc() {
   fi
 }
 
-function rec() {
+function recrypt() {
   if [[ -z "$1" ]]
   then
     echo "Usage: recrypt /path/to/thing"
@@ -76,4 +76,8 @@ function rec() {
   base="$(basename "$(basename "$1" .gpg)" .zip)"
 
   enc "$dir/$base"
+}
+
+function shut () {
+  kill -9 "$(lsof -ti :"$1")"
 }
