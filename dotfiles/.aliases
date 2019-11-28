@@ -1,0 +1,39 @@
+#!/bin/bash
+
+alias ..="cd .."
+alias -- - ="cd -"
+alias cl="clear"
+alias desk="cd ~/Desktop"
+alias dl="cd ~/Downloads"
+alias doc="cd ~/Documents"
+alias gr="grep"
+alias ifc="ifconfig"
+alias l="ls -l"
+alias la="l -a"
+alias ld="l -d */"
+alias pics="cd ~/Pictures"
+alias proj="cd ~/Projects"
+alias rr="rm -rf"
+alias sudo="sudo " # allow aliases to be sudo'ed
+alias trc="traceroute"
+
+## git
+alias g="git"
+alias ga="g add ."
+alias gc="g commit -m"
+alias gl="g log"
+alias gr="g remote add origin"
+alias gs="g status"
+alias pull="g pull origin"
+alias push="g push origin"
+
+## npm
+alias n="n"
+alias ni="n i"
+alias nl="n login"
+alias np="n publish"
+alias nr="n r"
+alias nu="n unpublish"
+
+## python
+alias py="python"
