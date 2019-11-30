@@ -3,7 +3,7 @@
 function decrypt() {
   if [[ -z "$1" ]]
   then
-    echo "Usage: dec /path/to/thing"
+    echo "Usage: decrypt /path/to/thing"
     exit 1
   fi
 
@@ -34,7 +34,7 @@ function decrypt() {
 function encrypt() {
   if [[ -z "$1" ]]
   then
-    echo "Usage: enc /path/to/thing"
+    echo "Usage: encrypt /path/to/thing"
     exit 1
   fi
 
@@ -78,6 +78,6 @@ function recrypt() {
   enc "$dir/$base"
 }
 
-function shut () {
+function shut() {
   kill -9 "$(lsof -ti :"$1")"
 }

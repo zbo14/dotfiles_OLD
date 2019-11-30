@@ -1,4 +1,6 @@
-colorscheme badwolf
+set background=dark
+colorscheme solarized
+let g:solarized_termtrans=1
 
 filetype indent on " load filetype-specific indent files
 
