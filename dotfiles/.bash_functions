@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
 function decrypt() {
-  if [[ -z "$1" ]]
-  then
+  if [[ -z "$1" ]]; then
     echo "Usage: decrypt /path/to/thing"
     exit 1
   fi
@@ -11,13 +10,11 @@ function decrypt() {
   dir="$(dirname "$1")"
   cd "$dir"
 
-  if [[ -f "$base.gpg" ]]
-  then
+  if [[ -f "$base.gpg" ]]; then
     echo "Decrypting $base.gpg"
     gpg --output "$base" --decrypt "$base.gpg"
     rm "$base.gpg"
-  elif [[ -f "$base.zip.gpg" ]]
-  then
+  elif [[ -f "$base.zip.gpg" ]]; then
     echo "Decrypting $base.zip.gpg"
     gpg --output "$base.zip" --decrypt "$base.zip.gpg"
     rm "$base.zip.gpg"
@@ -32,8 +29,7 @@ function decrypt() {
 }
 
 function encrypt() {
-  if [[ -z "$1" ]]
-  then
+  if [[ -z "$1" ]]; then
     echo "Usage: encrypt /path/to/thing"
     exit 1
   fi
@@ -42,16 +38,14 @@ function encrypt() {
   dir="$(dirname "$1")"
   cd "$dir"
 
-  if [[ -d "$base" ]]
-  then
+  if [[ -d "$base" ]]; then
     echo "Zipping $base directory"
     zip -r "$base.zip" "$base"
     rm -r "$base"
     base="$base.zip"
   fi
 
-  if [[ -f "$base" ]]
-  then
+  if [[ -f "$base" ]]; then
     echo "Encrypting $base"
     gpg --symmetric "$base"
     gpgconf --reload gpg-agent
@@ -62,20 +56,19 @@ function encrypt() {
 }
 
 function recrypt() {
-  if [[ -z "$1" ]]
-  then
+  if [[ -z "$1" ]]; then
     echo "Usage: recrypt /path/to/thing"
     exit
   fi
 
-  dec "$1"
+  decrypt "$1"
 
   read -p "Press enter to re-encrypt..."
 
   dir="$(dirname "$1")"
   base="$(basename "$(basename "$1" .gpg)" .zip)"
 
-  enc "$dir/$base"
+  encrypt "$dir/$base"
 }
 
 function shut() {

@@ -24,6 +24,7 @@ al gs="g status"
 al ifc="ifconfig"
 al l="ls -l"
 al la="l -a"
+al ns="netstat"
 
 ## npm
 al n="npm"
