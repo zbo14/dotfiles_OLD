@@ -8,11 +8,11 @@ apt-get install -y \
   gnupg \
   net-tools \
   nmap \
+  python3-pip \
   tcpdump \
   traceroute \
   wget \
   zip
 
-# Install LTS version of Node
-curl -sL https://deb.nodesource.com/setup_12.x | bash
-apt-get install -y nodejs
+update-alternatives --remove python /usr/bin/python2
+update-alternatives --install /usr/bin/python python /usr/bin/python3 10

@@ -24,6 +24,7 @@ al gs="g status"
 al ifc="ifconfig"
 al l="ls -l"
 al la="l -a"
+al nc="ncat"
 al ns="netstat"
 
 ## npm
@@ -38,7 +39,6 @@ al nup="n update"
 al pic="cd ~/Pictures"
 al prj="cd ~/Projects"
 al py="python"
-al py3="python3"
 al rr="rm -rf"
 al sudo="sudo " # allow aliases to be sudo'ed
 al trc="traceroute"
