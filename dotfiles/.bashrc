@@ -16,7 +16,7 @@ history -c
 rm -f ~/.bash_history
 
 # Don't keep track of history
-set +o history
+#set +o history
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
