@@ -3,7 +3,7 @@
 function decrypt() {
   if [[ -z "$1" ]]; then
     echo "Usage: decrypt /path/to/thing"
-    exit 1
+    return 1
   fi
 
   base="$(basename "$(basename "$1" .gpg)" .zip)"
@@ -24,14 +24,14 @@ function decrypt() {
     rm "$base.zip"
   else
     echo "No $base.gpg or $base.zip.gpg file!"
-    exit 1
+    return 1
   fi
 }
 
 function encrypt() {
   if [[ -z "$1" ]]; then
     echo "Usage: encrypt /path/to/thing"
-    exit 1
+    return 1
   fi
 
   base="$(basename "$1")"
@@ -52,16 +52,19 @@ function encrypt() {
     rm "$base"
   else
     echo "No file or directory $base!"
+    return 1
   fi
 }
 
 function recrypt() {
   if [[ -z "$1" ]]; then
     echo "Usage: recrypt /path/to/thing"
-    exit
+    return 1
   fi
 
   decrypt "$1"
+
+  [[ "$?" == 0 ]] || return "$?"
 
   read -p "Press enter to re-encrypt..."
 
@@ -69,6 +72,8 @@ function recrypt() {
   base="$(basename "$(basename "$1" .gpg)" .zip)"
 
   encrypt "$dir/$base"
+
+  return "$?"
 }
 
 function shut() {
