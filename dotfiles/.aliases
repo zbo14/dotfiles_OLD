@@ -3,6 +3,8 @@
 alias al="alias"
 
 al ..="cd .."
+al ...="..;.."
+al ....="...;.."
 al -- -="cd -"
 al clr="clear"
 al dsk="cd ~/Desktop"
@@ -24,6 +26,7 @@ al gs="g status"
 al ifc="ifconfig"
 al l="ls -l"
 al la="l -a"
+al mx="dig -t MX +short"
 al nc="ncat"
 al ns="netstat"
 

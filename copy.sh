@@ -3,3 +3,5 @@
 cd "$(dirname $0)"
 
 cp -R dotfiles/. ~
+
+chmod -R u+x ~/bin

@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+# import argparse
+from email.message import EmailMessage
+import smtplib
+
+def prompt(prompt=''):
+  return input(prompt).strip()
+
+server = prompt('SMTP server: ')
+smtp = smtplib.SMTP(server)
+
+msg = EmailMessage()
+msg['From'] = prompt('From: ')
+msg['To'] = prompt('To: ')
+msg['Subject'] = prompt('Subject: ')
+
+print('Start writing your email!')
+
+content = ''
+
+while True:
+  line = prompt()  
+
+  if not line:
+    break
+
+  content = content + line 
+
+msg.set_content(content)
+smtp.send_message(msg)
+smtp.quit()
