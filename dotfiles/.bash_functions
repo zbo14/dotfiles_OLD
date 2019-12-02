@@ -56,6 +56,10 @@ function encrypt() {
   fi
 }
 
+function mkd() {
+  mkdir -p "$1" && cd "$1"
+}
+
 function recrypt() {
   if [ -z "$1" ]; then
     echo "Usage: recrypt /path/to/thing"
@@ -74,6 +78,10 @@ function recrypt() {
   encrypt "$dir/$base"
 
   return "$?"
+}
+
+function scan() {
+ sudo nmap -sS -sU --host-timeout 5m "$1"
 }
 
 function shut() {
