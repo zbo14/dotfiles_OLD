@@ -60,6 +60,11 @@ function mkd() {
   mkdir -p "$1" && cd "$1"
 }
 
+function prj() {
+  cd ~/Projects
+  [ -z "$1" ] || cd "$1"
+}
+
 function recrypt() {
   if [ -z "$1" ]; then
     echo "Usage: recrypt /path/to/thing"

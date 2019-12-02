@@ -83,8 +83,8 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # Alias and function definitions
-. ~/.bash_aliases
-. ~/.bash_functions
+. ~/.aliases
+. ~/.functions
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

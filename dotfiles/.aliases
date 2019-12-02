@@ -37,7 +37,6 @@ al nu="n unpublish"
 al nup="n update"
 
 al pic="cd ~/Pictures"
-al prj="cd ~/Projects"
 al py="python"
 al rr="rm -rf"
 al sudo="sudo " # allow aliases to be sudo'ed
