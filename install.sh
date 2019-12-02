@@ -9,6 +9,7 @@ apt-get install -y \
   net-tools \
   nmap \
   python3-pip \
+  socat \
   tcpdump \
   traceroute \
   wget \
