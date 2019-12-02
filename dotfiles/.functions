@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+function connect() {
+  nc -vzw 3s "$1" "$2"
+}
+
 function decrypt() {
   if [ -z "$1" ]; then
     echo "Usage: decrypt /path/to/thing"
@@ -54,6 +58,10 @@ function encrypt() {
     echo "No file or directory $base!"
     return 1
   fi
+}
+
+function listen() {
+  nc -vkl "$1"
 }
 
 function mkd() {
