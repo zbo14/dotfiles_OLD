@@ -94,7 +94,7 @@ function recrypt() {
 }
 
 function scan() {
- sudo nmap -sS -sU --host-timeout 5m "$1"
+ sudo nmap -v -sS -sU --host-timeout 5m "$1"
 }
 
 function shut() {
