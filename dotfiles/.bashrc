@@ -4,9 +4,9 @@
 
 # If not running interactively, don't do anything
 case $- in
-  *i*) 
+  *i*)
     ;;
-  *) 
+  *)
     return
     ;;
 esac
@@ -67,7 +67,7 @@ case "$TERM" in
   xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-  *) 
+  *)
     ;;
 esac
 
@@ -84,7 +84,6 @@ fi
 
 # Alias and function definitions
 . ~/.aliases
-. ~/.functions
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

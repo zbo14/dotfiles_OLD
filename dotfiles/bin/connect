@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo 'Usage: connect <host> <port>'
+    exit 1
+fi
+
+nc -vzw 3s "$1" "$2"

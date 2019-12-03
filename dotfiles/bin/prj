@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+cd ~/Projects
+[ -z "$1" ] || cd "$1"

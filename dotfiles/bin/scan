@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+    echo "Usage: scan <host>"
+    exit 1
+fi
+
+sudo nmap -v -p- -sS -sU --host-timeout 10m "$1"
