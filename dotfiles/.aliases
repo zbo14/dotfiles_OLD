@@ -33,4 +33,5 @@ al py="python"
 al rr="rm -rf"
 al sudo="sudo " # allow aliases to be sudo'ed
 al tcp="tcpdump"
+al tel="telnet"
 al trc="traceroute"
