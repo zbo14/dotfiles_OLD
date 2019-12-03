@@ -1,6 +1,5 @@
 set background=dark
-colorscheme solarized
-let g:solarized_termtrans=1
+colorscheme gruvbox
 
 filetype indent on " load filetype-specific indent files
 
