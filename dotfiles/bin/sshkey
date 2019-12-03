@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+    echo "Usage: sshkey <name>"
+    exit 1
+fi
+
+ssh-keygen -f ~/.ssh/"$1" -N '' -t ed25519
+cat ~/.ssh/"$1.pub"
