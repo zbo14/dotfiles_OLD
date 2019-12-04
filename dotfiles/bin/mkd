@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-if [ -z "$1" ]; then
-    echo "Usage: mkd <path>"
-    exit 1
-fi
-
-mkdir -p "$1" && cd "$1"
