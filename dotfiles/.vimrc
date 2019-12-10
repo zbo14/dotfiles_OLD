@@ -29,3 +29,6 @@ so ~/.vim/plugins.vim
 map <C-t> :NERDTreeToggle<CR>
 
 let NERDTreeShowHidden=1
+
+:nnoremap <space> i<space><esc>
+:nnoremap <tab> i<tab><esc>
