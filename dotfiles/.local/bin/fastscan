@@ -1,9 +1,0 @@
-#!/bin/bash -e
-
-if [ -z "$1" ]; then
-    echo "Usage: fastscan <host>"
-    exit 1
-fi
-
-sudo nmap -n -v -Pn -T4 -sS "$1"
-

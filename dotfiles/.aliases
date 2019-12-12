@@ -46,3 +46,4 @@ al sudo="sudo " # allow aliases to be sudo'ed
 al tcp="tcpdump"
 al tel="telnet"
 al trc="traceroute"
+al who="whoami"
