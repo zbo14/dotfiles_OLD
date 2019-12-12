@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: send <host> <port> <stuff>"
+    exit 1
+fi
+
+if [ -f "$3" ]; then
+  cat "$3" | nc "$1" "$2"
+else
+  echo "$3" | nc "$1" "$2"
+fi
