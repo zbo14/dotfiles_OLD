@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
 if [ -z "$2" ]; then
-    echo "Usage: rand <encoding> <nbytes>"
+    echo "Usage: urand <encoding> <nbytes>"
     exit 1
 fi
 
 if [ "$1" == "base64" ]; then
   result="$(cat /dev/urandom | head -c "$2" | base64)"
 elif [ "$1" == "hex" ]; then
-  result="$(cat /dev/urandom | head -c "$2" | xxd -p)"
+  result="$(xxd -p -l "$2" -c "$2" /dev/urandom)"
 else
   echo "Expected encoding to be 'base64' or 'hex'"
   exit 1

@@ -6,4 +6,5 @@ if [ -z "$1" ]; then
 fi
 
 ssh-keygen -f ~/.ssh/"$1" -N '' -t ed25519
+
 cat ~/.ssh/"$1.pub"
