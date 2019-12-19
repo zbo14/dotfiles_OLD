@@ -6,7 +6,7 @@ if [ -z "$3" ]; then
 fi
 
 if [ -f "$3" ]; then
-  cat "$3" | nc "$1" "$2"
+    cat "$3" | nc "$1" "$2"
 else
-  echo "$3" | nc "$1" "$2"
+    echo "$3" | nc "$1" "$2"
 fi
