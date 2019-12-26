@@ -16,6 +16,7 @@ apt-get install -y \
   socat \
   tcpdump \
   traceroute \
+  tree \
   vim \
   wget \
   zip
