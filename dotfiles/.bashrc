@@ -82,9 +82,10 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-# Alias and function definitions
-. ~/.aliases
-. ~/.functions
+# Alias definitions
+if [ -f ~/.bash_aliases ]; then
+  . ~/.bash_aliases
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

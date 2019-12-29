@@ -1,3 +1,3 @@
 # dotfiles
 
-My dotfiles for Ubuntu and some helper scripts.
+My dotfiles for Ubuntu.

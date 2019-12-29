@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-if [ -z "$1" ]; then
-    echo "Usage: listen <port>"
-    exit 1
-fi
-
-nc -vkl "$1"

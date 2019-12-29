@@ -1,0 +1,9 @@
+{
+    "bootstrapped": true,
+
+    "installed_packages": [
+        "gruvbox",
+        "Package Control",
+        "SublimeLinter"
+    ]
+}

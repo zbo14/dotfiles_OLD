@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-if [ -z "$1" ]; then
-    echo "Usage: scan <host>"
-    exit 1
-fi
-
-sudo nmap -n -v -Pn -T4 -p- -sS "$1"

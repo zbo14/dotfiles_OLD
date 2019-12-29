@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-if [ -z "$1" ]; then
-    echo "Usage: shut <port>"
-    exit 1
-fi
-
-kill -9 "$(lsof -ti :"$1")"

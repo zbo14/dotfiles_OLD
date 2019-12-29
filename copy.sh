@@ -2,6 +2,4 @@
 
 cd "$(dirname $0)"
 
-cp -R dotfiles/. ~
-
-chmod -R u+x ~/.local/bin
+cp -r dotfiles/. ~
