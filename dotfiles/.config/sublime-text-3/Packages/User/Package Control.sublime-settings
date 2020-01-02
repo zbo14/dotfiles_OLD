@@ -2,8 +2,10 @@
     "bootstrapped": true,
 
     "installed_packages": [
+        "DocBlockr",
         "gruvbox",
         "Package Control",
-        "SublimeLinter"
+        "SublimeLinter",
+        "SublimeLinter-eslint"
     ]
 }
