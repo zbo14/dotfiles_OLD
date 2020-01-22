@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+if [ "$#" -lt 2 ]; then
+    echo "Usage: encrypt <filename> <recipient>"
+    exit 1
+fi
+
+base=$(basename "$1")
+dir=$(dirname "$1")
+cd "$dir"
+
+if [ -d "$base" ]; then
+    echo "Zipping $base directory"
+    zip -r "$base.zip" "$base"
+    rm -r "$base"
+    base="$base.zip"
+fi
+
+if [ -f "$base" ]; then
+    echo "Encrypting $base"
+    gpg --encrypt --recipient "$2" --sign "$base"
+    gpgconf --reload gpg-agent
+    rm "$base"
+else
+    echo "No file or directory $base!"
+    exit 1
+fi

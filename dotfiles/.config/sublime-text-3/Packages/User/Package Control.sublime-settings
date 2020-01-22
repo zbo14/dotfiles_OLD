@@ -1,0 +1,14 @@
+{
+    "bootstrapped": true,
+
+    "installed_packages": [
+        "DocBlockr",
+        "gruvbox",
+        "MarkdownPreview",
+        "Package Control",
+        "SublimeLinter",
+        "SublimeLinter-eslint",
+        "SublimeLinter-pylint",
+        "SublimeLinter-shellcheck"
+    ]
+}
