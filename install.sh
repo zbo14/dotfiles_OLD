@@ -9,12 +9,10 @@ rm -rf ~/.tmux
 mkdir ~/.tmux ~/.tmux/plugins
 git clone --quiet https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &
 
-read -r -p "Please enter name: " name
-read -r -p "Please enter email: " email
-read -r -p "Please enter git username: " username
+read -r -p "Please enter your name: " name
+read -r -p "Please enter your email: " email
+read -r -p "Please enter your git username: " username
 
-echo '
-[user]
-    name = '"$name"'
-    email = '"$email"'
-    username = '"$username" >> ~/.gitconfig
+git config --global user.email "$email"
+git config --global user.name "$name"
+git config --global user.username "$username"

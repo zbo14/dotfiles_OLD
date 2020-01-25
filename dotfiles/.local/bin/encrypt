@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-if [ "$#" -lt 2 ]; then
-    echo "Usage: encrypt <filename> <recipient>"
+if [ -z "$1" ]; then
+    echo "Usage: encrypt <filename>"
     exit 1
 fi
 
@@ -13,12 +13,26 @@ if [ -d "$base" ]; then
     echo "Zipping $base directory"
     zip -r "$base.zip" "$base"
     rm -r "$base"
-    base="$base.zip"
+fi
+
+if [ ! -f "$base" ]; then
+    base="$base.zip" 
 fi
 
 if [ -f "$base" ]; then
-    echo "Encrypting $base"
-    gpg --encrypt --recipient "$2" --sign "$base"
+    read -p "Encrypt with (k)ey or (p)assword: " mode
+    
+    if [ "$mode" == "k" ]; then
+        echo "Encrypting with key"
+        gpg --encrypt --sign "$base"
+    elif [ "$mode" == "p" ]; then
+        echo "Encrypting with password"
+        gpg --symmetric "$base"
+    else
+        echo "Invalid mode"   
+        exit 1
+    fi
+
     gpgconf --reload gpg-agent
     rm "$base"
 else
