@@ -35,6 +35,7 @@ let NERDTreeShowHidden=1
 
 let g:ale_linters = {
 \   'javascript': ['eslint'],
+\   'python': ['pylint'],
 \   'sh': ['shellcheck'],
 \}
 

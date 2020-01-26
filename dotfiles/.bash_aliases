@@ -52,5 +52,6 @@ al prj="cd ~/Projects"
 al py="python"
 al rr="rm -rf"
 al sudo="sudo " # allow aliases to be sudo'ed
+al t="tmux"
 al tcp="tcpdump"
 al tel="telnet"
