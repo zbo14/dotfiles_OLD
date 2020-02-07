@@ -1,8 +1,8 @@
 {
-    "theme": "gruvbox.sublime-theme",
-    "color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).sublime-color-scheme",
-    "translate_tabs_to_spaces": true,
-    "trim_automatic_white_space": true,
-    "trim_trailing_white_space_on_save": true,
-    "ensure_newline_at_eof_on_save": true
+  "theme": "gruvbox.sublime-theme",
+  "color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).sublime-color-scheme",
+  "translate_tabs_to_spaces": true,
+  "trim_automatic_white_space": true,
+  "trim_trailing_white_space_on_save": true,
+  "ensure_newline_at_eof_on_save": true
 }
