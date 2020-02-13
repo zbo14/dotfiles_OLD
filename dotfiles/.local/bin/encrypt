@@ -16,12 +16,12 @@ if [ -d "$base" ]; then
 fi
 
 if [ ! -f "$base" ]; then
-    base="$base.zip" 
+    base="$base.zip"
 fi
 
 if [ -f "$base" ]; then
-    read -p "Encrypt with (k)ey or (p)assword: " mode
-    
+    read -p -r "Encrypt with (k)ey or (p)assword: " mode
+
     if [ "$mode" == "k" ]; then
         echo "Encrypting with key"
         gpg --encrypt --sign "$base"
@@ -29,7 +29,7 @@ if [ -f "$base" ]; then
         echo "Encrypting with password"
         gpg --symmetric "$base"
     else
-        echo "Invalid mode"   
+        echo "Invalid mode"
         exit 1
     fi
 

@@ -9,6 +9,7 @@
     "SublimeLinter",
     "SublimeLinter-eslint",
     "SublimeLinter-pylint",
-    "SublimeLinter-shellcheck"
+    "SublimeLinter-shellcheck",
+    "Svelte"
   ]
 }
