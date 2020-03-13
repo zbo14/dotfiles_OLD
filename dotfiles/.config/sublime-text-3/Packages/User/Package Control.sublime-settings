@@ -4,12 +4,12 @@
   "installed_packages": [
     "DocBlockr",
     "gruvbox",
+    "HTML-CSS-JS Prettify",
     "MarkdownPreview",
     "Package Control",
     "SublimeLinter",
     "SublimeLinter-eslint",
     "SublimeLinter-pylint",
-    "SublimeLinter-shellcheck",
-    "Svelte"
+    "SublimeLinter-shellcheck"
   ]
 }
