@@ -59,6 +59,7 @@ al pic="cd ~/Pictures"
 al prj="cd ~/Projects"
 al py="python"
 al rr="rm -rf"
+al sql="py ~/sqlmap/sqlmap.py"
 al sub="py ~/Sublist3r/sublist3r.py"
 al sudo="sudo " # allow aliases to be sudo'ed
 al t="tmux"
