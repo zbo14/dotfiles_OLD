@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  echo "Usage: ips <domain>"
+  exit 1
+fi
+
+mapfile -t ips < <(dig +short "$1")
+
+for ip in "${ips[@]}"; do
+  echo "IPv4: $ip"
+  whom="$(whois "$ip")"
+  cidr="$(echo "$whom" | grep "CIDR:" | sed 's/  */ /g')"
+  echo "$cidr"
+done
