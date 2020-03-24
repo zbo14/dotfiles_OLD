@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if [ "$#" -lt 2 ]; then
+  echo "Usage: repeat <string> <times>"
+  exit 1
+fi
+
+yes "$1" | head -n "$2" | tr -d '\n'

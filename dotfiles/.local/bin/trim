@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  echo "Usage: trim <string>"
+  exit 1
+fi
+
+echo "$1" | tr -d '[:space:]'

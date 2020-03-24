@@ -1,8 +1,12 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: scan <host>"
+  echo "Usage: scan <host> [ports]"
   exit 1
 fi
 
-sudo nmap -n -v -Pn -T4 -sS "$1"
+if [ -z "$2" ]; then
+  sudo nmap -n -v -Pn -T4 -sS "$1"
+else
+  sudo nmap -n -v -Pn -p"$2" -T4 -sS "$1"
+fi
