@@ -1,46 +1,46 @@
 [color]
-    ui = auto
+  ui = auto
 
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 
 [commit]
-    gpgsign = true
+  gpgsign = true
 
 [diff]
-    tool = vimdiff
+  tool = vimdiff
 
 [diff "bin"]
-    textconv = hexdump -v -C
+  textconv = hexdump -v -C
 
 [difftool]
-    prompt = false
+  prompt = false
 
 [help]
-    autocorrect = 1
+  autocorrect = 1
 
 [merge]
-    log = true
+  log = true
 
 [push]
-    default = simple
-    followTags = false
+  default = simple
+  followTags = false
 
 [url "git@github.com:"]
-    insteadOf = gh:
+  insteadOf = gh:
 
 [url "git@gist.github.com:"]
-    insteadOf = gst:
+  insteadOf = gst:
