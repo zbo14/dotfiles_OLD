@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  echo "Usage: doname <domain> [dir]"
+  exit 1
+fi
+
+dir="${2:-"$PWD"}"
+mkdir -p "$dir" "$dir/subdomains"
+
+dump () {
+  dump="$(dnsdump "$1")"
+
+  if [[ "$dump" =~ ":" ]]; then
+    echo "$1" >> "$dir/subdomains.txt"
+    echo "$dump" > "$dir/subdomains/$1.txt"
+  fi
+}
+
+amass enum -passive -d "$1" | while read -r subdomain; do
+  dump "$subdomain" &
+done
+
+wait
