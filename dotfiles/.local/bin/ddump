@@ -9,7 +9,7 @@ dir="${2:-"$PWD"}"
 mkdir -p "$dir" "$dir/subdomains"
 
 dump () {
-  dump="$(dnsdump "$1")"
+  dump="$(dnsdump "$1" 2>/dev/null)"
 
   if [[ "$dump" =~ ":" ]]; then
     echo "$1" >> "$dir/subdomains.dump"
@@ -17,7 +17,7 @@ dump () {
   fi
 }
 
-amass enum -passive -d "$1" | while read -r subdomain; do
+amass enum -passive -d "$1" 2> /dev/null | while read -r subdomain; do
   dump "$subdomain" &
 done
 
