@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: jp <json>"
-  exit 1
+  jq .
+else
+  echo "$1" | jq .
 fi
-
-echo "$1" | jq .

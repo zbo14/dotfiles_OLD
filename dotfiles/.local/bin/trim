@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: trim <string>"
-  exit 1
+  tr -d '[:space:]'
+else
+  echo "$1" | tr -d '[:space:]'
 fi
-
-echo "$1" | tr -d '[:space:]'
