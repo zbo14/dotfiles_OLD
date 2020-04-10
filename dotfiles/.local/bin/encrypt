@@ -20,7 +20,7 @@ if [ ! -f "$base" ]; then
 fi
 
 if [ -f "$base" ]; then
-  read -i "k" -p -r "Encrypt with (K)ey or (p)assword: " mode
+  read -i "k" -r -p "Encrypt with (K)ey or (p)assword: " mode
   mode="${mode,,}"
 
   if [ "$mode" == "k" ]; then

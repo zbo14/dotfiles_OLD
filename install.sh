@@ -9,10 +9,10 @@ rm -rf ~/.tmux
 mkdir ~/.tmux ~/.tmux/plugins
 git clone --quiet https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &
 
-read -r -p "Please enter your name: " name
-read -r -p "Please enter your email: " email
-read -r -p "Please enter your git username: " username
-read -r -p "Please enter your signing key: " signingkey
+read -er -p "Please enter your name: " name
+read -er -p "Please enter your email: " email
+read -er -p "Please enter your git username: " username
+read -er -p "Please enter your signing key: " signingkey
 
 git config --global user.email "$email"
 git config --global user.name "$name"
