@@ -6,4 +6,4 @@ Some aliases, scripts, and applications require tools that might not be installe
 
 ## Usage
 
-Clone the repo and `sh install.sh`.
+Clone the repo and `./install.sh`.
