@@ -3,6 +3,7 @@
 
   "installed_packages": [
     "DocBlockr",
+    "Gofmt",
     "gruvbox",
     "HTML-CSS-JS Prettify",
     "MarkdownPreview",
