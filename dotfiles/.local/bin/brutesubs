@@ -15,6 +15,10 @@ done < ~/Projects/wordlists/subdomains.txt
   -o S \
   -r ~/Projects/massdns/lists/resolvers.txt \
   "$tf" \
-  2> /dev/null
+  2> /dev/null \
+  | cut -d ' ' -f1 \
+  | rev \
+  | cut -c2- \
+  | rev
 
 rm "$tf"

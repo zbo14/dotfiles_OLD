@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const fs = require('fs')
+const tls = require('tls')
+
+const domains = (process.argv[2] || '')
+  .toLowerCase()
+  .split(',')
+  .map(domain => domain.trim())
+  .filter(Boolean)
+
+console.warn('[-] Checking if IP addresses have following cert names:')
+
+domains.forEach(domain => console.warn('  * ' + domain))
+
+const cb = async ip => {
+  try {
+    await new Promise((resolve, reject) => {
+      setTimeout(() => reject(new Error('Timeout')), 5e3)
+
+      const sock = tls.connect(443, ip, { rejectUnauthorized: false }, () => {
+        const cert = sock.getPeerCertificate()
+
+        const names = [
+          cert.subject.CN,
+          ...(cert.subjectaltname || '').split(',').map(name => {
+            const [, ...value] = name.split(':')
+            return value.join(':').trim()
+          })
+        ].filter(Boolean)
+
+        for (const domain of domains) {
+          for (const name of names) {
+            if (name.endsWith(domain)) {
+              console.log(ip, name)
+              return resolve()
+            }
+          }
+        }
+
+        resolve()
+      }).once('error', reject)
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+process.stdin
+  .setEncoding('utf8')
+  .on('data', data => {
+    data
+      .split('\n')
+      .filter(Boolean)
+      .forEach(cb)
+  })
