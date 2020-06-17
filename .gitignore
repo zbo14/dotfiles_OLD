@@ -1,5 +1,5 @@
-*.asc
 .DS_Store
+*.asc
 *.gpg
 *.key
 *.log
