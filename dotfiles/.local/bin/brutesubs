@@ -1,15 +1,21 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  warn "Usage: brutesubs <domain>"
+  warn "Usage: brutesubs <domain1> [domain2] ..."
   exit 1
 fi
 
 tf="$(mktemp)"
 
-while read -r sub; do
-  echo "$sub.$1" >> "$tf"
-done < ~/Projects/wordlists/subdomains.txt
+warn "[-] Generating wordlist"
+
+for root in "$@"; do
+  while read -r sub; do
+    echo "$sub.$root" >> "$tf"
+  done < ~/Projects/wordlists/subdomains.txt
+done
+
+warn "[-] Brute-forcing subdomains"
 
 ~/Projects/massdns/bin/massdns \
   -o S \

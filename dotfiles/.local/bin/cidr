@@ -5,4 +5,4 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-whois "$1" | grep CIDR | grep -oP '[0-9\./]*' | sort -u
+whois "$1" | grep CIDR | grap | sort -u

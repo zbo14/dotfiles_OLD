@@ -11,17 +11,20 @@ if [ ! -f "$1" ]; then
 fi
 
 getIPs () {
+  warn "[-] Resolving domains to IP addresses"
+
   ~/Projects/massdns/bin/massdns \
     -o S \
     -r ~/Projects/massdns/lists/resolvers.txt \
     "$1" \
     2> /dev/null \
-    | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' \
+    | grip \
     | sort -u
 }
 
 getRanges () {
   while read -r ip; do
+    warn "[-] Finding range for $ip"
     whois -h whois.cymru.com " -f -p $ip"
   done | sort -u
 }
