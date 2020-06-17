@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  warn "Usage: d2r <file>"
+  exit 1
+fi
+
+if [ ! -f "$1" ]; then
+  warn "No file: $1"
+  exit 1
+fi
+
+getIPs () {
+  ~/Projects/massdns/bin/massdns \
+    -o S \
+    -r ~/Projects/massdns/lists/resolvers.txt \
+    "$1" \
+    2> /dev/null \
+    | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' \
+    | sort -u
+}
+
+getRanges () {
+  while read -r ip; do
+    whois -h whois.cymru.com " -f -p $ip"
+  done | sort -u
+}
+
+getIPs "$1" | getRanges

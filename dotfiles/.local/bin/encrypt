@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: encrypt <filename>"
+  warn "Usage: encrypt <filename>"
   exit 1
 fi
 
@@ -31,13 +31,13 @@ if [ -f "$base" ]; then
     echo "Encrypting with password"
     gpg --symmetric "$base"
   else
-    echo "Invalid mode"
+    warn "Invalid mode"
     exit 1
   fi
 
   gpgconf --reload gpg-agent
   rm "$base"
 else
-  echo "No file or directory $base!"
+  warn "No file or directory $base!"
   exit 1
 fi

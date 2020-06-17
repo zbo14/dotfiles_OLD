@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: decrypt <filename>"
+  warn "Usage: decrypt <filename>"
   exit 1
 fi
 
@@ -22,7 +22,7 @@ elif [ -f "$base.zip.gpg" ]; then
   unzip "$base.zip"
   rm "$base.zip"
 else
-  echo "No $base.gpg or $base.zip.gpg file!"
+  warn "No $base.gpg or $base.zip.gpg file!"
   exit 1
 fi
 

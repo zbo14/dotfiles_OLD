@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: shut <port>"
+  warn "Usage: shut <port>"
   exit 1
 fi
 

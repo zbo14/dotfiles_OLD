@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: massdns <domain>"
+  warn "Usage: brutesubs <domain>"
   exit 1
 fi
 
 tf="$(mktemp)"
 
-while read -r line; do
-  echo "$line.$1" >> "$tf"
+while read -r sub; do
+  echo "$sub.$1" >> "$tf"
 done < ~/Projects/wordlists/subdomains.txt
 
 ~/Projects/massdns/bin/massdns \

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: cidr <addr>"
+  warn "Usage: cidr <addr>"
   exit 1
 fi
 
