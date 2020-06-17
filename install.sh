@@ -14,7 +14,7 @@ read -er -p "Please enter your email: " email
 read -er -p "Please enter your git username: " username
 
 signingkey="$(gpg -K | grep sec | grep -oE '0x[0-9A-F]+' | cut -c3-)"
-[[ "$signingkey" =~ [0-9A-F]+ ]] && read -er -p "Please enter your signing key: " signingkey
+[[ "$signingkey" =~ [0-9A-F]+ ]] || read -er -p "Please enter your signing key: " signingkey
 
 git config --global user.email "$email"
 git config --global user.name "$name"
