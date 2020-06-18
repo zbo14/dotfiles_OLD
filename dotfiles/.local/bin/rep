@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 if [ "$#" -lt 2 ]; then
   warn "Usage: rep <string> <times>"
