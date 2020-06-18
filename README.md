@@ -6,4 +6,4 @@ Some aliases, scripts, and applications require tools that might not be installe
 
 ## Usage
 
-Clone the repo and `./install.sh`.
+Clone the repo, fill out `template.env`, rename it to `.env` (gitignored), and `./install.sh`.

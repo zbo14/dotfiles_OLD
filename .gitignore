@@ -1,8 +1,2 @@
 .DS_Store
-*.asc
-*.gpg
-*.key
-*.log
-*.pem
-*.pid
-*.swp
+.env
