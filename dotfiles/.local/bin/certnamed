@@ -2,18 +2,18 @@
 
 'use strict'
 
-const fs = require('fs')
 const tls = require('tls')
 
-const domains = (process.argv[2] || '')
-  .toLowerCase()
-  .split(',')
-  .map(domain => domain.trim())
-  .filter(Boolean)
+const domains = process.argv.slice(2).filter(Boolean)
+
+if (!domains.length) {
+  console.error('[!] No domains specified')
+  process.exit(1)
+}
 
 console.warn('[-] Checking if IP addresses have following cert names:')
 
-domains.forEach(domain => console.warn('  * ' + domain))
+domains.forEach(domain => console.warn('   * ' + domain))
 
 const cb = async ip => {
   try {
@@ -33,7 +33,10 @@ const cb = async ip => {
 
         for (const domain of domains) {
           for (const name of names) {
-            if (name.endsWith(domain)) {
+            const match = name === domain ||
+              (name.endsWith(domain) && name.split('.').length > domain.split('.').length)
+
+            if (match) {
               console.log(ip, name)
               return resolve()
             }

@@ -21,7 +21,6 @@ warn "[-] Brute-forcing subdomains"
   -o S \
   -r ~/Projects/massdns/lists/resolvers.txt \
   "$tf" \
-  2> /dev/null \
   | cut -d ' ' -f1 \
   | rev \
   | cut -c2- \
