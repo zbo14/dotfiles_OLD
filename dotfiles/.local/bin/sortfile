@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  warn "Usage: sortfile <file>"
+  exit 1
+fi
+
+if [ ! -f "$1" ]; then
+  warn "No file: $1"
+  exit 1
+fi
+
+data="$(sort -u "$1")"
+echo "$data" > "$1"

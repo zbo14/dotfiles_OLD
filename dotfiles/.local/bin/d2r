@@ -26,7 +26,7 @@ getRanges () {
   while read -r ip; do
     warn "[-] Finding range for $ip"
     whois -h whois.cymru.com " -f -p $ip"
-  done | sort -u
+  done | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]+' | sort -u
 }
 
 getIPs "$1" | getRanges

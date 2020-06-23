@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  warn "Usage: revolve <file>"
+  exit 1
+fi
+
+if [ ! -f "$1" ]; then
+  warn "No file: $1"
+  exit 1
+fi
+
+while read -r ip; do
+  warn "[-] Performing reverse lookup for $ip"
+  dig +short -x "$ip"
+done < "$1" | sort -u
