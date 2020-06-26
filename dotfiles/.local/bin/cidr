@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [ -z "$1" ]; then
-  warn "Usage: cidr <addr>"
-  exit 1
-fi
-
-whois "$1" | grep CIDR | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]+' | sort -u

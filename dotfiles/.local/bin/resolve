@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  warn "Usage: resolve <file>"
+  exit 1
+fi
+
+if [ ! -f "$1" ]; then
+  warn "No file: $1"
+  exit 1
+fi
+
+~/Projects/massdns/bin/massdns \
+  -o S \
+  -r ~/Projects/massdns/lists/resolvers.txt \
+  "$1" \
+  | cut -d ' ' -f1 \
+  | rev \
+  | cut -c2- \
+  | rev

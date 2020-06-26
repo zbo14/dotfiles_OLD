@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  warn "Usage: scanranges <file> [limit]"
+  warn "Usage: rscan <file> [limit]"
   exit 1
 fi
 

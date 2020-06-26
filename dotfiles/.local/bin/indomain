@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const args = process.argv
+  .slice(2)
+  .filter(Boolean)
+  .map(arg => arg.trim().toLowerCase())
+
+if (args.includes('-h') || args.includes('--help')) {
+  console.error('Usage: indomain [-h] [root1] [root2] ...')
+  process.exit()
+}
+
+process.stdin
+  .setEncoding('utf8')
+  .on('data', data => {
+    data
+      .split('\n')
+      .filter(Boolean)
+      .forEach(url => {
+        try {
+          url = new URL(url.trim())
+        } catch {
+          return
+        }
+
+        if (args.length) {
+          const inScope = args.some(root => {
+            return url.hostname === root ||
+              (url.hostname.endsWith(root) && url.hostname.split('.').length > root.split('.').length)
+          })
+
+          if (!inScope) return
+        }
+
+        console.log(url.href)
+      })
+  })
