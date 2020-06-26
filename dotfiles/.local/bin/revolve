@@ -10,7 +10,9 @@ if [ ! -f "$1" ]; then
   exit 1
 fi
 
-while read -r ip; do
-  warn "[-] Performing reverse lookup for $ip"
-  dig +short -x "$ip"
-done < "$1" | sort -u
+cat "$1" | xargs -n 1 -P 10 bash -c $'
+  result="$(dig +short -x "$0")"
+
+  if [[ "$result" =~ [0-9A-Za-z]+ ]]; then
+    echo "$0,$result"
+  fi'

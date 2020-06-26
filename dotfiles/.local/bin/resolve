@@ -1,20 +1,19 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  warn "Usage: resolve <file>"
-  exit 1
+  warn "Usage: resolve [file]"
+  exit
 fi
 
-if [ ! -f "$1" ]; then
-  warn "No file: $1"
-  exit 1
+if [ -f "$1" ]; then
+  input="$1"
+else
+  input=/dev/stdin
 fi
 
-~/Projects/massdns/bin/massdns \
-  -o S \
-  -r ~/Projects/massdns/lists/resolvers.txt \
-  "$1" \
-  | cut -d ' ' -f1 \
-  | rev \
-  | cut -c2- \
-  | rev
+cat "$input" | xargs -n 1 -P 10 bash -c $'
+  ips="$(dig +short "$0" | grep -oE "([0-9]{1,3}\.){3}[0-9]{1,3}" | paste -sd,)"
+
+  if [ ! -z "$ips" ]; then
+    echo "$0,$ips"
+  fi'
