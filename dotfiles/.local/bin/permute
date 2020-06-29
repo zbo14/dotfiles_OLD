@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z "$2" ]; then
+  warn "Usage: permute <file1> <file2> [join]"
+  exit 1
+fi
+
+if [ ! -f "$1" ]; then
+  warn "No file: $1"
+  exit 1
+fi
+
+if [ ! -f "$2" ]; then
+  warn "No file: $2"
+  exit 1
+fi
+
+while read -r a; do
+  while read -r b; do
+    echo "$a$3$b"
+  done < "$2"
+done < "$1"
