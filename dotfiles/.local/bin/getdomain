@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+'use strict'
+
+process.stdin
+  .setEncoding('utf8')
+  .on('data', data => {
+    data
+      .split('\n')
+      .filter(Boolean)
+      .forEach(url => {
+        url = url.trim()
+
+        try {
+          const { hostname } = new URL(url)
+          console.log(hostname)
+        } catch {
+          console.error('[!] Invalid URL: ' + url)
+        }
+      })
+  })
