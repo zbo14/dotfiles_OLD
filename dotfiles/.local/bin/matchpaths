@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+'use strict'
+
+process.stdin
+  .setEncoding('utf8')
+  .on('data', data => {
+    const regex = /("|')(\/[\w\d?&=#.!:_-][\w\d?/&=#.!:_-]*?)\1/g
+
+    let match
+
+    while ((match = regex.exec(data))) {
+      console.log(match[2])
+    }
+  })
