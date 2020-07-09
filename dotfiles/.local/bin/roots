@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const fs = require('fs')
+
+const file = process.argv[2]
+
+if (!file) {
+  console.error('[!] Please specify <file>')
+  process.exit(1)
+}
+
+let data
+
+try {
+  data = fs.readFileSync(file, 'utf8')
+} catch {
+  console.error('[!] Cannot read file: ' + file)
+  process.exit(1)
+}
+
+let include
+
+try {
+  ({ target: { scope: { include } } } = JSON.parse(data))
+} catch {
+  console.error('[!] Invalid configuration file')
+  process.exit(1)
+}
+
+let domains = include
+  .map(obj => {
+    let domain = obj.host.replace(/\^|\\|\$/g, '')
+    const wildcard = domain.startsWith('.*')
+
+    if (wildcard) {
+      domain = domain.slice(3)
+    }
+
+    return domain
+  })
+  .filter((d1, _, ds) => {
+    return !ds.some(d2 => d1.endsWith(d2) && d1.split('.').length > d2.split('.').length)
+  })
+
+domains = [...new Set(domains)].sort()
+
+domains.forEach(domain => console.log(domain))
