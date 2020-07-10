@@ -56,4 +56,20 @@ sortfile out/urls.txt
 
 cat out/subdomains.txt >> subdomains.txt
 
+touch paths.txt urls.txt
+
+comm -23 out/paths.txt paths.txt | sort -u > new-paths.txt
+comm -23 out/urls.txt urls.txt | sort -u > new-urls.txt
+
+cat out/paths.txt >> paths.txt
+cat out/urls.txt >> urls.txt
+
+sortfile paths.txt
 sortfile subdomains.txt
+sortfile urls.txt
+
+warn "[-] Taking screenshots"
+
+mkdir -p ip-screenshots subdomain-screenshots
+cat new-ips.txt | aquatone -out ip-screenshots
+cat new-subdomains.txt | aquatone -out subdomain-screenshots
