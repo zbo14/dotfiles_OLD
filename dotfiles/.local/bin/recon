@@ -1,0 +1,55 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  warn "Usage: recon <program>"
+  exit 1
+fi
+
+warn "[-] Running passive subdomain enumeration with sc0pe"
+
+sc0pe -a burp-config.json >> subdomains.txt
+
+warn "[-] Running active enumeration with amass and tracking changes"
+
+amass enum -active -df domains.txt >> subdomains.txt
+amass track -df domains.txt > changes.txt
+
+sortfile subdomains.txt
+
+warn "[-] Resolving subdomains"
+
+resolve subdomains.txt | sort -u > resolved.txt
+
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u > alive-ips.txt
+uptil , resolved.txt | sort -u > alive-subdomains.txt
+
+warn "[-] Writing subdomains and IP address to database"
+
+mongomap push "$1" domains alive-subdomains.txt
+mongomap push "$1" ips alive-ips.txt
+
+warn "[-] Pulling new subdomains and IP address from database"
+
+mongomap pull "$1" domains > new-subdomains.txt
+mongomap pull "$1" ips > new-ips.txt
+
+warn "[-] Generating URLs from subdomains and IP addresses"
+
+prepend https:// alive-ips.txt > ip-urls.txt
+prepend http:// alive-ips.txt >> ip-urls.txt
+
+prepend https:// alive-subdomains.txt > subdomain-urls.txt
+prepend http:// alive-subdomains.txt >> subdomain-urls.txt
+
+# warn "[-] Running endpoint and URL discovery with sourcery"
+
+# mkdir -p out
+# sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 subdomain-urls.txt
+
+# sortfile out/paths.txt
+# sortfile out/subdomains.txt
+# sortfile out/urls.txt
+
+# cat out/subdomains >> subdomains.txt
+
+# sortfile subdomains.txt
