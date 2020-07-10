@@ -1,8 +1,12 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  warn "Usage: recon <program>"
+  warn "Usage: recon <program> [dir]"
   exit 1
+fi
+
+if [ ! -z "$2" ]; then
+  cd "$2"
 fi
 
 warn "[-] Running passive subdomain enumeration with sc0pe"
@@ -41,15 +45,15 @@ prepend http:// alive-ips.txt >> ip-urls.txt
 prepend https:// alive-subdomains.txt > subdomain-urls.txt
 prepend http:// alive-subdomains.txt >> subdomain-urls.txt
 
-# warn "[-] Running endpoint and URL discovery with sourcery"
+warn "[-] Running endpoint and URL discovery with sourcery"
 
-# mkdir -p out
-# sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 subdomain-urls.txt
+mkdir -p out
+sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 subdomain-urls.txt
 
-# sortfile out/paths.txt
-# sortfile out/subdomains.txt
-# sortfile out/urls.txt
+sortfile out/paths.txt
+sortfile out/subdomains.txt
+sortfile out/urls.txt
 
-# cat out/subdomains >> subdomains.txt
+cat out/subdomains.txt >> subdomains.txt
 
-# sortfile subdomains.txt
+sortfile subdomains.txt
