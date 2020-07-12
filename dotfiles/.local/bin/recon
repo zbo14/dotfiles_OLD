@@ -9,6 +9,19 @@ if [ ! -z "$2" ]; then
   cd "$2"
 fi
 
+warn "[-] Running endpoint and URL discovery with sourcery"
+
+mkdir -p out
+sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 urls.txt
+
+sortfile out/paths.txt
+sortfile out/subdomains.txt
+sortfile out/urls.txt
+
+cat out/subdomains.txt >> subdomains.txt
+
+sortfile subdomains.txt
+
 warn "[-] Running passive subdomain enumeration with sc0pe"
 
 sc0pe -a burp-config.json >> subdomains.txt
@@ -24,8 +37,29 @@ warn "[-] Resolving subdomains"
 
 resolve subdomains.txt | sort -u > resolved.txt
 
-grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u > alive-ips.txt
-uptil , resolved.txt | sort -u > alive-subdomains.txt
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u > resolved-ips.txt
+cat resolved-ips.txt | privaddr > private-ips.txt
+uptil , resolved.txt | sort -u > resolved-subdomains.txt
+
+comm -23 subdomains.txt resolved-subdomains.txt > unresolved.txt
+
+warn "[-] Checking alive subdomains and IP addresses"
+
+cat resolved-ips.txt | httprobe | sort -u > ip-urls.txt
+cat resolved-subdomains.txt | httprobe | sort -u > subdomain-urls.txt
+
+comm -23 ip-urls.txt urls.txt > new-urls.txt
+comm -23 subdomain-urls.txt urls.txt >> new-urls.txt
+
+sortfile new-urls.txt
+
+cat ip-urls.txt >> urls.txt
+cat subdomain-urls.txt >> urls.txt
+
+sortfile urls.txt
+
+cat ip-urls.txt | urlhost | sort -u > alive-ips.txt
+cat subdomain-urls.txt | urlhost | sort -u > alive-subdomains.txt
 
 warn "[-] Writing subdomains and IP address to database"
 
@@ -37,39 +71,12 @@ warn "[-] Pulling new subdomains and IP address from database"
 mongomap pull "$1" domains > new-subdomains.txt
 mongomap pull "$1" ips > new-ips.txt
 
-warn "[-] Generating URLs from subdomains and IP addresses"
+warn "[-] Filtering endpoints by status code"
 
-prepend https:// alive-ips.txt > ip-urls.txt
-prepend http:// alive-ips.txt >> ip-urls.txt
-
-prepend https:// alive-subdomains.txt > subdomain-urls.txt
-prepend http:// alive-subdomains.txt >> subdomain-urls.txt
-
-warn "[-] Running endpoint and URL discovery with sourcery"
-
-mkdir -p out
-sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 subdomain-urls.txt
-
-sortfile out/paths.txt
-sortfile out/subdomains.txt
-sortfile out/urls.txt
-
-cat out/subdomains.txt >> subdomains.txt
-
-touch paths.txt urls.txt
-
-comm -23 out/paths.txt paths.txt | sort -u > new-paths.txt
-comm -23 out/urls.txt urls.txt | sort -u > new-urls.txt
-
-cat out/paths.txt >> paths.txt
-cat out/urls.txt >> urls.txt
-
-sortfile paths.txt
-sortfile subdomains.txt
-sortfile urls.txt
+~/Projects/responsieve/responsieve -k -s 401,403 subdomain-urls.txt | urlhost | sort -u > off-limits.txt
 
 warn "[-] Taking screenshots"
 
-mkdir -p ip-screenshots subdomain-screenshots
-cat new-ips.txt | aquatone -out ip-screenshots
-cat new-subdomains.txt | aquatone -out subdomain-screenshots
+mkdir -p new-screenshots screenshots
+cat new-urls.txt | aquatone -out new-screenshots -proxy 127.0.0.1:8080
+cat urls.txt | aquatone -out screenshots -proxy 127.0.0.1:8080

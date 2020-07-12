@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+'use strict'
+
+process.stdin
+  .setEncoding('utf8')
+  .on('data', data => {
+    data
+      .split('\n')
+      .filter(Boolean)
+      .forEach(addr => {
+        addr = addr.trim()
+
+        const octets = addr
+          .split('.')
+          .map(x => +x)
+          .filter(x => Number.isInteger(x) && x >= 0 && x < 256)
+
+        if (octets.length !== 4) return
+
+        const isPrivAddr = octets[0] === 10 ||
+          (octets[0] === 192 && octets[1] === 168) ||
+          (octets[0] === 172 && octets[1] >= 16 && octets[1] < 32)
+
+        isPrivAddr ? console.log(addr) : console.error(addr)
+      })
+  })
