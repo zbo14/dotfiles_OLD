@@ -12,7 +12,7 @@ fi
 warn "[-] Running endpoint and URL discovery with sourcery"
 
 mkdir -p out
-sourcery -d "$(paste -s -d, domains.txt)" -o out -x 127.0.0.1:8080 urls.txt
+sourcery -d "$(paste -s -d, domains.txt)" -o out urls.txt
 
 sortfile out/paths.txt
 sortfile out/subdomains.txt
@@ -37,8 +37,7 @@ warn "[-] Resolving subdomains"
 
 resolve subdomains.txt | sort -u > resolved.txt
 
-grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u > resolved-ips.txt
-cat resolved-ips.txt | privaddr > private-ips.txt
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u | privaddr > private-ips.txt 2> resolved-ips.txt
 uptil , resolved.txt | sort -u > resolved-subdomains.txt
 
 comm -23 subdomains.txt resolved-subdomains.txt > unresolved.txt
@@ -78,5 +77,5 @@ warn "[-] Filtering endpoints by status code"
 warn "[-] Taking screenshots"
 
 mkdir -p new-screenshots screenshots
-cat new-urls.txt | aquatone -out new-screenshots -proxy 127.0.0.1:8080
-cat urls.txt | aquatone -out screenshots -proxy 127.0.0.1:8080
+cat new-urls.txt | aquatone -out new-screenshots
+cat urls.txt | aquatone -out screenshots
