@@ -29,7 +29,7 @@ sc0pe -a burp-config.json >> subdomains.txt
 warn "[-] Running active enumeration with amass and tracking changes"
 
 amass enum -active -df domains.txt >> subdomains.txt
-amass track -df domains.txt > changes.txt
+amass track -last 1 -df domains.txt > changes.txt
 
 sortfile subdomains.txt
 
@@ -47,28 +47,21 @@ warn "[-] Checking alive subdomains and IP addresses"
 cat resolved-ips.txt | httprobe | sort -u > ip-urls.txt
 cat resolved-subdomains.txt | httprobe | sort -u > subdomain-urls.txt
 
-comm -23 ip-urls.txt urls.txt > new-urls.txt
-comm -23 subdomain-urls.txt urls.txt >> new-urls.txt
-
-sortfile new-urls.txt
-
-cat ip-urls.txt >> urls.txt
-cat subdomain-urls.txt >> urls.txt
-
-sortfile urls.txt
-
 cat ip-urls.txt | urlhost | sort -u > alive-ips.txt
 cat subdomain-urls.txt | urlhost | sort -u > alive-subdomains.txt
 
-warn "[-] Writing subdomains and IP address to database"
+warn "[-] Writing subdomains, IP addresses, and URLs to database"
 
 mongomap push "$1" domains alive-subdomains.txt
 mongomap push "$1" ips alive-ips.txt
+mongomap push "$1" urls ip-urls
+mongomap push "$1" urls subdomain-urls
 
-warn "[-] Pulling new subdomains and IP address from database"
+warn "[-] Pulling new subdomains, IP addresses, and URLs from database"
 
 mongomap pull "$1" domains > new-subdomains.txt
 mongomap pull "$1" ips > new-ips.txt
+mongomap pull "$1" urls > new-urls.txt
 
 warn "[-] Filtering endpoints by status code"
 
@@ -76,6 +69,10 @@ warn "[-] Filtering endpoints by status code"
 
 warn "[-] Taking screenshots"
 
-mkdir -p new-screenshots screenshots
-cat new-urls.txt | aquatone -out new-screenshots
-cat urls.txt | aquatone -out screenshots
+mkdir -p screenshots
+cat new-urls.txt | aquatone -out screenshots
+
+warn "[-] Scanning ports"
+
+ports="$(sudo nmap -n -Pn -p- -sS -T4 -iL new-ips.txt)"
+echo "$ports" > ports.txt
