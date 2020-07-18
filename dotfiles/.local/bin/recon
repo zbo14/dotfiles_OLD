@@ -13,7 +13,6 @@ warn "[-] Running endpoint and URL discovery with sourcery"
 
 mkdir -p out
 sourcery -d "$(paste -s -d, domains.txt)" -o out urls.txt
-
 sortfile out/paths.txt
 sortfile out/subdomains.txt
 sortfile out/urls.txt
@@ -29,7 +28,7 @@ sc0pe -a burp-config.json >> subdomains.txt
 warn "[-] Running active enumeration with amass and tracking changes"
 
 amass enum -active -df domains.txt >> subdomains.txt
-amass track -last 1 -df domains.txt > changes.txt
+amass track -last 2 -df domains.txt > changes.txt
 
 sortfile subdomains.txt
 
@@ -37,25 +36,26 @@ warn "[-] Resolving subdomains"
 
 resolve subdomains.txt | sort -u > resolved.txt
 
-grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u | privaddr > private-ips.txt 2> resolved-ips.txt
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u | privaddr > private-ips.txt 2> ips.txt
 uptil , resolved.txt | sort -u > resolved-subdomains.txt
 
 comm -23 subdomains.txt resolved-subdomains.txt > unresolved.txt
 
-warn "[-] Checking alive subdomains and IP addresses"
+warn "[-] Generating URLs from IP addresses"
 
-cat resolved-ips.txt | httprobe | sort -u > ip-urls.txt
-cat resolved-subdomains.txt | httprobe | sort -u > subdomain-urls.txt
+prepend https:// ips.txt > ip-urls.txt
+prepend http:// ips.txt >> ip-urls.txt
 
-cat ip-urls.txt | urlhost | sort -u > alive-ips.txt
-cat subdomain-urls.txt | urlhost | sort -u > alive-subdomains.txt
+warn "[-] Checking alive subdomains"
+
+cat resolved-subdomains.txt | httprobe | sort -u > urls.txt
+cat urls.txt | urlhost | sort -u > alive-subdomains.txt
 
 warn "[-] Writing subdomains, IP addresses, and URLs to database"
 
 mongomap push "$1" domains alive-subdomains.txt
-mongomap push "$1" ips alive-ips.txt
-mongomap push "$1" urls ip-urls
-mongomap push "$1" urls subdomain-urls
+mongomap push "$1" ips ips.txt
+mongomap push "$1" urls urls.txt
 
 warn "[-] Pulling new subdomains, IP addresses, and URLs from database"
 
@@ -65,14 +65,29 @@ mongomap pull "$1" urls > new-urls.txt
 
 warn "[-] Filtering endpoints by status code"
 
-~/Projects/responsieve/responsieve -k -s 401,403 subdomain-urls.txt | urlhost | sort -u > off-limits.txt
+ffuf -mc 401,403 -o /dev/stdout -of csv -u FUZZ -w urls.txt 2> /dev/null | uptil , | urlhost 2> /dev/null | sort -u > off-limits.txt
 
 warn "[-] Taking screenshots"
 
-mkdir -p screenshots
+rm -rf screenshots
+mkdir screenshots
 cat new-urls.txt | aquatone -out screenshots
+
+warn "[-] Discovering web paths"
+
+rm -rf paths
+mkdir paths
+
+while read -r url; do
+  python3 ~/Projects/dirsearch/dirsearch.py \
+    -e asp,aspx,backup,bak,cfg,conf,config,db,js,json,jsp,log,old,php,py,sql,swp,tsx,txt,xml \
+    --plain-text-report=paths/"$(encode "$url")" \
+    -t 40 \
+    -u "$url" \
+    -w ~/Projects/wordlists/dirsearch.txt
+done < new-urls.txt
 
 warn "[-] Scanning ports"
 
-ports="$(sudo nmap -n -Pn -p- -sS -T4 -iL new-ips.txt)"
+ports="$(sudo nmap -n -Pn -sS --top-ports 2000 -iL new-ips.txt)"
 echo "$ports" > ports.txt
