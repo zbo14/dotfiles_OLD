@@ -66,28 +66,3 @@ mongomap pull "$1" urls > new-urls.txt
 warn "[-] Filtering endpoints by status code"
 
 ffuf -mc 401,403 -o /dev/stdout -of csv -u FUZZ -w urls.txt 2> /dev/null | uptil , | urlhost 2> /dev/null | sort -u > off-limits.txt
-
-warn "[-] Taking screenshots"
-
-rm -rf screenshots
-mkdir screenshots
-cat new-urls.txt | aquatone -out screenshots
-
-warn "[-] Discovering web paths"
-
-rm -rf paths
-mkdir paths
-
-while read -r url; do
-  python3 ~/Projects/dirsearch/dirsearch.py \
-    -e asp,aspx,backup,bak,cfg,conf,config,db,js,json,jsp,log,old,php,py,sql,swp,tsx,txt,xml \
-    --plain-text-report=paths/"$(encode "$url")" \
-    -t 40 \
-    -u "$url" \
-    -w ~/Projects/wordlists/dirsearch.txt
-done < new-urls.txt
-
-warn "[-] Scanning ports"
-
-ports="$(sudo nmap -n -Pn -sS --top-ports 2000 -iL new-ips.txt)"
-echo "$ports" > ports.txt
