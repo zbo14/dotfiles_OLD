@@ -12,7 +12,7 @@ fi
 warn "[-] Running endpoint and URL discovery with sourcery"
 
 mkdir -p out
-sourcery -d "$(paste -s -d, domains.txt)" -o out urls.txt
+sourcery -d "$(paste -s -d, domains.txt)" -f urls.txt -o out
 sortfile out/paths.txt
 sortfile out/subdomains.txt
 sortfile out/urls.txt
@@ -21,9 +21,11 @@ cat out/subdomains.txt >> subdomains.txt
 
 sortfile subdomains.txt
 
+after '>' out/paths.txt | cut -c3- | sort -u > wordlist.txt
+
 warn "[-] Running passive subdomain enumeration with sc0pe"
 
-sc0pe -a burp-config.json >> subdomains.txt
+sc0pe -a burp-config.json -p 4 >> subdomains.txt
 
 warn "[-] Running active enumeration with amass and tracking changes"
 
@@ -39,7 +41,12 @@ resolve subdomains.txt | sort -u > resolved.txt
 grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u | privaddr > private-ips.txt 2> ips.txt
 uptil , resolved.txt | sort -u > resolved-subdomains.txt
 
+grep -E ',(10|192\.168)\.' resolved.txt | uptil , | sort -u > internal-hosts.txt
 comm -23 subdomains.txt resolved-subdomains.txt > unresolved.txt
+
+cp internal-hosts.txt vhosts.txt
+cat unresolved.txt >> vhosts.txt
+sortfile vhosts.txt
 
 warn "[-] Generating URLs from IP addresses"
 
