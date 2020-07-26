@@ -2,20 +2,20 @@
 
 'use strict'
 
-process.stdin
-  .setEncoding('utf8')
-  .on('data', data => {
-    data
-      .split('\n')
-      .filter(Boolean)
-      .forEach(url => {
-        url = url.trim()
+const readline = require('readline')
 
-        try {
-          const { hostname } = new URL(url)
-          console.log(hostname)
-        } catch {
-          console.error('[!] Invalid URL: ' + url)
-        }
-      })
-  })
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: null
+})
+
+rl.on('line', url => {
+  url = url.trim()
+
+  try {
+    const { hostname } = new URL(url)
+    console.log(hostname)
+  } catch {
+    console.error('[!] Invalid URL: ' + url)
+  }
+})
