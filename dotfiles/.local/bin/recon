@@ -9,19 +9,29 @@ if [ ! -z "$2" ]; then
   cd "$2"
 fi
 
-warn "[-] Running endpoint and URL discovery with sourcery"
+getnew () {
+  touch "$1"
+  sortfile new-"$1"
+  x="$(comm -23 new-"$1" "$1")"
+  echo "$x" > new-"$1"
+  cat new-"$1" >> "$1"
+  sortfile "$1"
+}
 
-mkdir -p out
-sourcery -d "$(paste -s -d, domains.txt)" -f urls.txt -o out
-sortfile out/paths.txt
-sortfile out/subdomains.txt
-sortfile out/urls.txt
+# warn "[-] Running endpoint and URL discovery with sourcery"
 
-cat out/subdomains.txt >> subdomains.txt
+# mkdir -p out
+# sourcery -d "$(paste -s -d, domains.txt)" -f urls.txt -o out
+# sortfile out/paths.txt
+# sortfile out/subdomains.txt
+# sortfile out/urls.txt
+
+# cat out/subdomains.txt >> subdomains.txt
 
 sortfile subdomains.txt
 
-after '>' out/paths.txt | cut -c3- | sort -u > wordlist.txt
+after '>' out/paths.txt | cut -c3- > wordlist.txt
+sortfile wordlist.txt
 
 warn "[-] Running passive subdomain enumeration with sc0pe"
 
@@ -31,45 +41,41 @@ warn "[-] Running active enumeration with amass and tracking changes"
 
 amass enum -active -df domains.txt >> subdomains.txt
 amass track -last 2 -df domains.txt > changes.txt
+grep Found changes.txt > found.txt
 
 sortfile subdomains.txt
 
 warn "[-] Resolving subdomains"
 
-resolve subdomains.txt | sort -u > resolved.txt
+resolve subdomains.txt > resolved.txt
+sortfile resolved.txt
 
-grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | sort -u | privaddr > private-ips.txt 2> ips.txt
-uptil , resolved.txt | sort -u > resolved-subdomains.txt
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' resolved.txt | privaddr > new-private-ips.txt 2> new-ips.txt
+getnew ips.txt
+getnew private-ips.txt
 
-grep -E ',(10|192\.168)\.' resolved.txt | uptil , | sort -u > internal-hosts.txt
-comm -23 subdomains.txt resolved-subdomains.txt > unresolved.txt
+uptil , resolved.txt > new-resolved-subdomains.txt
+getnew resolved-subdomains.txt
 
-cp internal-hosts.txt vhosts.txt
-cat unresolved.txt >> vhosts.txt
-sortfile vhosts.txt
+grep -E ',(10|192\.168)\.' resolved.txt | uptil , > new-internal-hosts.txt
+getnew internal-hosts.txt
 
-warn "[-] Generating URLs from IP addresses"
-
-prepend https:// ips.txt > ip-urls.txt
-prepend http:// ips.txt >> ip-urls.txt
+comm -23 subdomains.txt resolved-subdomains.txt > new-unresolved.txt
+getnew unresolved.txt
 
 warn "[-] Checking alive subdomains"
 
-cat resolved-subdomains.txt | httprobe | sort -u > urls.txt
-cat urls.txt | urlhost | sort -u > alive-subdomains.txt
-
-warn "[-] Writing subdomains, IP addresses, and URLs to database"
-
-mongomap push "$1" domains alive-subdomains.txt
-mongomap push "$1" ips ips.txt
-mongomap push "$1" urls urls.txt
-
-warn "[-] Pulling new subdomains, IP addresses, and URLs from database"
-
-mongomap pull "$1" domains > new-subdomains.txt
-mongomap pull "$1" ips > new-ips.txt
-mongomap pull "$1" urls > new-urls.txt
+cat resolved-subdomains.txt | httprobe > new-urls.txt
+cat new-urls.txt | urlhost > new-alive-subdomains.txt
+getnew alive-subdomains.txt
+getnew urls.txt
 
 warn "[-] Filtering endpoints by status code"
 
-ffuf -mc 401,403 -o /dev/stdout -of csv -u FUZZ -w urls.txt 2> /dev/null | uptil , | urlhost 2> /dev/null | sort -u > off-limits.txt
+ffuf -mc 401,403 -o /dev/stdout -of csv -u FUZZ -w urls.txt 2> /dev/null | uptil , | urlhost 2> /dev/null > new-off-limits.txt
+getnew off-limits.txt
+
+# warn "[-] Pulling IPs + certnames from censys.io"
+
+# eyep -f domains.txt > new-eyep.txt
+# getnew eyep.txt
