@@ -1,5 +1,3 @@
-#!/bin/bash
-
 alias al="alias"
 
 al ..="cd .."
