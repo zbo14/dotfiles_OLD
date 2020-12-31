@@ -28,14 +28,15 @@ getnew () {
 
 # cat out/subdomains.txt >> subdomains.txt
 
+touch subdomains.txt
 sortfile subdomains.txt
 
-after '>' out/paths.txt | cut -c3- > wordlist.txt
-sortfile wordlist.txt
+# after '>' out/paths.txt | cut -c3- > wordlist.txt
+# sortfile wordlist.txt
 
 warn "[-] Running passive subdomain enumeration with sc0pe"
 
-sc0pe -a burp-config.json -p 4 >> subdomains.txt
+sc0pe -a burp-config.json -p "$(lscpu -p | grep -c "^[0-9]")" >> subdomains.txt
 
 warn "[-] Running active enumeration with amass and tracking changes"
 
