@@ -2,6 +2,7 @@
   "bootstrapped": true,
 
   "installed_packages": [
+    "Babel",
     "DocBlockr",
     "Gofmt",
     "gruvbox",
@@ -11,6 +12,8 @@
     "SublimeLinter",
     "SublimeLinter-eslint",
     "SublimeLinter-pylint",
-    "SublimeLinter-shellcheck"
+    "SublimeLinter-shellcheck",
+    "TypeScript",
+    "Vue Syntax Highlight"
   ]
 }
