@@ -16,11 +16,15 @@ set showmatch             " highlight matching [{()}]
 set incsearch             " search as characters are entered
 set hlsearch              " highlight matches
 set clipboard=unnamedplus " use system clipboard
+set ruler                 " Show the cursor position
+set shortmess=atI         " Don’t show intro message when starting Vim
+set showmode              " Show the current mode
 
-autocmd BufNewFile,BufRead *.c,*.h set tabstop=8
-autocmd BufNewFile,BufRead *.c,*.h set softtabstop=8
-autocmd BufNewFile,BufRead *.c,*.h set shiftwidth=8
-autocmd BufNewFile,BufRead *.c,*.h set noexpandtab
+" Use relative line numbers
+if exists("&relativenumber")
+  set relativenumber
+  au BufReadPost * set relativenumber
+endif
 
 " Install and run vim-plug on first run
 if empty(glob('~/.vim/autoload/plug.vim'))
