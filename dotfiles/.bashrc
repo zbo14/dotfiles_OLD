@@ -99,6 +99,7 @@ if ! shopt -oq posix; then
 fi
 
 export GPG_TTY=$(tty)
+export LFS=/mnt/lfs
 
 . "$HOME"/.asdf/asdf.sh
 . "$HOME"/.asdf/completions/asdf.bash
