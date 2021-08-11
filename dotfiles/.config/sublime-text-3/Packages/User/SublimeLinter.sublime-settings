@@ -1,0 +1,12 @@
+{
+  "linters": {
+    "eslint": {
+      "disable": false,
+      "args": [],
+      "excludes": [],
+      "env": {
+        "PATH": "~/.asdf/shims:$PATH"
+      }
+    }
+  }
+}
