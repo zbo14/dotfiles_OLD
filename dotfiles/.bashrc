@@ -101,5 +101,8 @@ fi
 export GPG_TTY=$(tty)
 export LFS=/mnt/lfs
 
+python_version="$(grep python "$HOME/.tool-versions" | grep -o '[.0-9]*')"
+PATH="$HOME/.asdf/installs/python/$python_version/bin:$PATH"
+
 . "$HOME"/.asdf/asdf.sh
 . "$HOME"/.asdf/completions/asdf.bash
